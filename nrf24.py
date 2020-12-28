@@ -166,7 +166,7 @@ class NRF24:
     LNA_OFF = 0
 
     # P model bit Mnemonics
-    RF_DR_LOW = 0x32 # changed from 20
+    RF_DR_LOW = 0x20
     RF_DR_HIGH = 0x08
     RF_PWR_LOW = 0x02
     RF_PWR_HIGH = 0x04
