@@ -597,12 +597,12 @@ class NRF24:
         rx_ready = status & NRF24.RX_DR
         return {'tx_ok': tx_ok, "tx_fail": tx_fail, "rx_ready": rx_ready}
 
-    def openWritingPipe(self, value):
+    def openWritingPipe(self, address):
         # Note that the NRF24L01(+)
         # expects it LSB first.
 
-        self.write_register(NRF24.RX_ADDR_P0, value)
-        self.write_register(NRF24.TX_ADDR, value)
+        self.write_register(NRF24.RX_ADDR_P0, address)
+        self.write_register(NRF24.TX_ADDR, address)
         if not self.dynamic_payloads_enabled:
             self.write_register(NRF24.RX_PW_P0, self.payload_size)
 
