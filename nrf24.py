@@ -772,10 +772,12 @@ class NRF24:
             self.data_rate_bits = 1000
             self.data_rate = NRF24.BR_1MBPS
 
+        print("DEBUG: Value in register - "+str(self.read_register(NRF24.RF_SETUP))+"...")
+        print("DEBUG: Writing to register - "+str(setup)+"...")
         self.write_register(NRF24.RF_SETUP, setup)
 
         # Verify our result
-        print("DEBUG: RESULT - "+str(self.read_register(NRF24.RF_SETUP) == setup))
+        print("DEBUG: Value in register - "+str(self.read_register(NRF24.RF_SETUP))+"...")
         return self.read_register(NRF24.RF_SETUP) == setup
 
     def getDataRate(self):
