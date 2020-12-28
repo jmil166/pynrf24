@@ -747,11 +747,11 @@ class NRF24:
             return NRF24.PA_MIN
 
     def setDataRate(self, speed):
-        print("DEBUG: Setting data rate to:"+speed+"...")
+        print("DEBUG: Setting data rate to:"+str(speed)+"...")
         setup = self.read_register(NRF24.RF_SETUP)
-        print("DEBUG: RF Setup:"+setup+"...")
+        print("DEBUG: RF Setup:"+str(setup)+"...")
         setup &= ~(NRF24.RF_DR_LOW | NRF24.RF_DR_HIGH)
-        print("DEBUG: DR RF Setup:"+setup+"...")
+        print("DEBUG: DR RF Setup:"+str(setup)+"...")
 
         if speed == NRF24.BR_250KBPS:
             print("DEBUG: We want to be here...")
@@ -760,7 +760,7 @@ class NRF24:
             self.data_rate_bits = 250
             self.data_rate = NRF24.BR_250KBPS
             setup |= NRF24.RF_DR_LOW
-            print("DEBUG: New DR RF Setup:"+setup+"...")
+            print("DEBUG: New DR RF Setup:"+str(setup)+"...")
         elif speed == NRF24.BR_2MBPS:
             # Set 2Mbs, RF_DR (RF_DR_HIGH) is set 1
             # Making it '01'
