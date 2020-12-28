@@ -166,7 +166,7 @@ class NRF24:
     LNA_OFF = 0
 
     # P model bit Mnemonics
-    RF_DR_LOW = 0x20
+    RF_DR_LOW = 0x32 # changed from 20
     RF_DR_HIGH = 0x08
     RF_PWR_LOW = 0x02
     RF_PWR_HIGH = 0x04
@@ -747,20 +747,20 @@ class NRF24:
             return NRF24.PA_MIN
 
     def setDataRate(self, speed):
-        print("DEBUG: Setting data rate to:"+str(speed)+"...")
-        setup = self.read_register(NRF24.RF_SETUP)
-        print("DEBUG: RF Setup:"+str(setup)+"...")
-        setup &= ~(NRF24.RF_DR_LOW | NRF24.RF_DR_HIGH)
-        print("DEBUG: DR RF Setup:"+str(setup)+"...")
+        print("DEBUG: Setting data rate...")
+        print("DEBUG: Desired speed = "+str(speed))
 
+        setup = self.read_register(NRF24.RF_SETUP)
+        print("DEBUG: RF_SETUP register = "+"{0:b}".format(38).zfill(setup))
+        setup &= ~(NRF24.RF_DR_LOW | NRF24.RF_DR_HIGH)
+        print("DEBUG: Cleaned RF_SETUP register = "+"{0:b}".format(38).zfill(setup))
+        
         if speed == NRF24.BR_250KBPS:
-            print("DEBUG: We want to be here...")
             # Must set the RF_DR_LOW to 1 RF_DR_HIGH (used to be RF_DR) is already 0
             # Making it '10'.
             self.data_rate_bits = 250
             self.data_rate = NRF24.BR_250KBPS
             setup |= NRF24.RF_DR_LOW
-            print("DEBUG: New DR RF Setup:"+str(setup)+"...")
         elif speed == NRF24.BR_2MBPS:
             # Set 2Mbs, RF_DR (RF_DR_HIGH) is set 1
             # Making it '01'
@@ -772,12 +772,11 @@ class NRF24:
             self.data_rate_bits = 1000
             self.data_rate = NRF24.BR_1MBPS
 
-        print("DEBUG: Value in register - "+str(self.read_register(NRF24.RF_SETUP))+"...")
-        print("DEBUG: Writing to register - "+str(setup)+"...")
+        print("DEBUG: New RF_SETUP register = "+"{0:b}".format(38).zfill(setup))
         self.write_register(NRF24.RF_SETUP, setup)
 
         # Verify our result
-        print("DEBUG: Value in register - "+str(self.read_register(NRF24.RF_SETUP))+"...")
+        print("DEBUG: Saved RF_SETUP register = "+str(self.read_register(NRF24.RF_SETUP)))
         return self.read_register(NRF24.RF_SETUP) == setup
 
     def getDataRate(self):
