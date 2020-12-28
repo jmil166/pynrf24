@@ -775,6 +775,7 @@ class NRF24:
         self.write_register(NRF24.RF_SETUP, setup)
 
         # Verify our result
+        print("DEBUG: RESULT - "+str(self.read_register(NRF24.RF_SETUP) == setup))
         return self.read_register(NRF24.RF_SETUP) == setup
 
     def getDataRate(self):
