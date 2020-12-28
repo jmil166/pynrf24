@@ -773,6 +773,8 @@ class NRF24:
             self.data_rate = NRF24.BR_1MBPS
 
         print("DEBUG: New RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
+        print(str(setup))
+        print(str(33))
         #self.write_register(NRF24.RF_SETUP, setup)
         self.write_register(NRF24.RF_SETUP, 33)
 
