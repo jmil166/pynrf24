@@ -751,9 +751,9 @@ class NRF24:
         print("DEBUG: Desired speed = "+str(speed))
 
         setup = self.read_register(NRF24.RF_SETUP)
-        print("DEBUG: RF_SETUP register = "+"{0:b}".format(38).zfill(setup))
+        print("DEBUG: RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
         setup &= ~(NRF24.RF_DR_LOW | NRF24.RF_DR_HIGH)
-        print("DEBUG: Cleaned RF_SETUP register = "+"{0:b}".format(38).zfill(setup))
+        print("DEBUG: Cleaned RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
         
         if speed == NRF24.BR_250KBPS:
             # Must set the RF_DR_LOW to 1 RF_DR_HIGH (used to be RF_DR) is already 0
@@ -772,11 +772,11 @@ class NRF24:
             self.data_rate_bits = 1000
             self.data_rate = NRF24.BR_1MBPS
 
-        print("DEBUG: New RF_SETUP register = "+"{0:b}".format(38).zfill(setup))
+        print("DEBUG: New RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
         self.write_register(NRF24.RF_SETUP, setup)
 
         # Verify our result
-        print("DEBUG: Saved RF_SETUP register = "+str(self.read_register(NRF24.RF_SETUP)))
+        print("DEBUG: Saved RF_SETUP register = "+"{0:b}".format(self.read_register(NRF24.RF_SETUP)).zfill(8))
         return self.read_register(NRF24.RF_SETUP) == setup
 
     def getDataRate(self):
