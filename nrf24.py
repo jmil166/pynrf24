@@ -239,7 +239,7 @@ class NRF24:
             except IOError:
                 pass  # Hardware does not support this speed
 
-        self.spidev.cshigh = False
+        # self.spidev.cshigh = False https://github.com/raspberrypi/linux/issues/3745
         self.spidev.mode = 0
         self.spidev.loop = False
         self.spidev.lsbfirst = False
