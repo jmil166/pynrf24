@@ -349,7 +349,7 @@ class NRF24:
     def write_register(self, reg, value):
         """ Write register value """
         buf = [NRF24.W_REGISTER | (NRF24.REGISTER_MASK & reg)]
-        buf += self._to_8b_list(value)
+        buf += self._to_8b_list(int(value))
         self.spidev.xfer2(buf)
 
     def write_payload(self, buf):
@@ -747,13 +747,9 @@ class NRF24:
             return NRF24.PA_MIN
 
     def setDataRate(self, speed):
-        print("DEBUG: Setting data rate...")
-        print("DEBUG: Desired speed = "+str(speed))
 
         setup = self.read_register(NRF24.RF_SETUP)
-        print("DEBUG: RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
         setup &= ~(NRF24.RF_DR_LOW | NRF24.RF_DR_HIGH)
-        print("DEBUG: Cleaned RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
         
         if speed == NRF24.BR_250KBPS:
             # Must set the RF_DR_LOW to 1 RF_DR_HIGH (used to be RF_DR) is already 0
@@ -772,11 +768,8 @@ class NRF24:
             self.data_rate_bits = 1000
             self.data_rate = NRF24.BR_1MBPS
 
-        print("DEBUG: New RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
-        self.write_register(NRF24.RF_SETUP, int(setup))
-
+        self.write_register(NRF24.RF_SETUP, setup)
         # Verify our result
-        print("DEBUG: Saved RF_SETUP register = "+"{0:b}".format(self.read_register(NRF24.RF_SETUP)).zfill(8))
         return self.read_register(NRF24.RF_SETUP) == setup
 
     def getDataRate(self):
