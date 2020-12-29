@@ -18,8 +18,6 @@
 # Select the most appropriate for you by uncommenting one of the
 # two imports.
 
-import time
-
 try:
     # For Raspberry Pi
     import RPi.GPIO as GPIO
@@ -775,8 +773,8 @@ class NRF24:
             self.data_rate = NRF24.BR_1MBPS
 
         print("DEBUG: New RF_SETUP register = "+"{0:b}".format(setup).zfill(8))
-        self.write_register(NRF24.RF_SETUP, setup)
-        time.sleep(0.5)
+        self.write_register(NRF24.RF_SETUP, 33)
+
         # Verify our result
         print("DEBUG: Saved RF_SETUP register = "+"{0:b}".format(self.read_register(NRF24.RF_SETUP)).zfill(8))
         return self.read_register(NRF24.RF_SETUP) == setup
