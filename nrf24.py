@@ -303,7 +303,7 @@ class NRF24:
             self.spidev = None
 
     def startListening(self):
-        self.write_register(NRF24.CONFIG, self.read_register(NRF24.CONFIG) | NRF24.PWR_UP | NRF24.PRIM_RX)
+        self.write_register(NRF24.CONFIG, int(self.read_register(NRF24.CONFIG) | NRF24.PWR_UP | NRF24.PRIM_RX))
 
         self.flush_tx()
         self.flush_rx()
@@ -482,7 +482,7 @@ class NRF24:
 
         # Enable TX
         self.write_register(NRF24.CONFIG,
-                            (self.read_register(NRF24.CONFIG) | NRF24.PWR_UP) & ~NRF24.PRIM_RX)
+                            int((self.read_register(NRF24.CONFIG) | NRF24.PWR_UP) & ~NRF24.PRIM_RX))
 
         # Enable pipe 0 for auto-ack
         self.write_register(NRF24.EN_RXADDR, self.read_register(NRF24.EN_RXADDR) | 1)
