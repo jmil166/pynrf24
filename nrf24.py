@@ -349,7 +349,7 @@ class NRF24:
     def write_register(self, reg, value):
         """ Write register value """
         buf = [NRF24.W_REGISTER | (NRF24.REGISTER_MASK & reg)]
-        buf += self._to_8b_list(int(value))
+        buf += self._to_8b_list(value)
         self.spidev.xfer2(buf)
 
     def write_payload(self, buf):
@@ -733,7 +733,7 @@ class NRF24:
             # On error, go to maximum PA
             setup |= NRF24.RF_PWR_LOW | NRF24.RF_PWR_HIGH
 
-        self.write_register(NRF24.RF_SETUP, setup)
+        self.write_register(NRF24.RF_SETUP, int(setup))
 
     def getPALevel(self):
         power = self.read_register(NRF24.RF_SETUP) & (NRF24.RF_PWR_LOW | NRF24.RF_PWR_HIGH)
@@ -768,7 +768,8 @@ class NRF24:
             self.data_rate_bits = 1000
             self.data_rate = NRF24.BR_1MBPS
 
-        self.write_register(NRF24.RF_SETUP, setup)
+        self.write_register(NRF24.RF_SETUP, int(setup))
+
         # Verify our result
         return self.read_register(NRF24.RF_SETUP) == setup
 
