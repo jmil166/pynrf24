@@ -800,7 +800,7 @@ class NRF24:
             config |= NRF24.CRCO
             self.crc_length = 2
 
-        self.write_register(NRF24.CONFIG, config)
+        self.write_register(NRF24.CONFIG, int(config))
 
     def getCRCLength(self):
         result = NRF24.CRC_DISABLED
