@@ -184,13 +184,14 @@ class NRF24:
     def _to_8b_list(data):
         """Convert an arbitray iteratable or single int to a list of ints
             where each int is smaller than 256."""
+        print("Raw data: "+str(data)+" "+str(type(data)))
         if isinstance(data, str):
             data = [ord(x) for x in data]
         elif isinstance(data, (int, long)):
             data = [data]
         else:
             data = [int(x) for x in data]
-
+        print("Write data: "+str(data)+" "+str(type(data)))
         #for byte in data:
         #    if byte < 0 or byte > 255:
         #        raise RuntimeError("Value %d is larger than 8 bits" % byte)
@@ -303,7 +304,7 @@ class NRF24:
             self.spidev = None
 
     def startListening(self):
-        self.write_register(NRF24.CONFIG, int(self.read_register(NRF24.CONFIG) | NRF24.PWR_UP | NRF24.PRIM_RX))
+        self.write_register(NRF24.CONFIG, self.read_register(NRF24.CONFIG) | NRF24.PWR_UP | NRF24.PRIM_RX)
 
         self.flush_tx()
         self.flush_rx()
@@ -482,7 +483,7 @@ class NRF24:
 
         # Enable TX
         self.write_register(NRF24.CONFIG,
-                            int((self.read_register(NRF24.CONFIG) | NRF24.PWR_UP) & ~NRF24.PRIM_RX))
+                            (self.read_register(NRF24.CONFIG) | NRF24.PWR_UP) & ~NRF24.PRIM_RX)
 
         # Enable pipe 0 for auto-ack
         self.write_register(NRF24.EN_RXADDR, self.read_register(NRF24.EN_RXADDR) | 1)
@@ -618,15 +619,15 @@ class NRF24:
         if pipe == 0:
             self.pipe0_reading_address = address
 
-        self.write_register(NRF24.RX_ADDR_P0 + pipe, int(address))
+        self.write_register(NRF24.RX_ADDR_P0 + pipe, address)
         if not self.dynamic_payloads_enabled:
-            self.write_register(NRF24.RX_PW_P0 + pipe, int(self.payload_size))
+            self.write_register(NRF24.RX_PW_P0 + pipe, self.payload_size)
 
         # Note it would be more efficient to set all of the bits for all open
         # pipes at once.  However, I thought it would make the calling code
         # more simple to do it this way.
         self.write_register(NRF24.EN_RXADDR,
-                            int(self.read_register(NRF24.EN_RXADDR) | (1 << pipe)))
+                            self.read_register(NRF24.EN_RXADDR) | (1 << pipe))
 
     def closeReadingPipe(self, pipe):
         self.write_register(NRF24.EN_RXADDR,
@@ -733,7 +734,7 @@ class NRF24:
             # On error, go to maximum PA
             setup |= NRF24.RF_PWR_LOW | NRF24.RF_PWR_HIGH
 
-        self.write_register(NRF24.RF_SETUP, int(setup))
+        self.write_register(NRF24.RF_SETUP, setup)
 
     def getPALevel(self):
         power = self.read_register(NRF24.RF_SETUP) & (NRF24.RF_PWR_LOW | NRF24.RF_PWR_HIGH)
@@ -768,7 +769,7 @@ class NRF24:
             self.data_rate_bits = 1000
             self.data_rate = NRF24.BR_1MBPS
 
-        self.write_register(NRF24.RF_SETUP, int(setup))
+        self.write_register(NRF24.RF_SETUP, setup)
 
         # Verify our result
         return self.read_register(NRF24.RF_SETUP) == setup
@@ -800,7 +801,7 @@ class NRF24:
             config |= NRF24.CRCO
             self.crc_length = 2
 
-        self.write_register(NRF24.CONFIG, int(config))
+        self.write_register(NRF24.CONFIG, config)
 
     def getCRCLength(self):
         result = NRF24.CRC_DISABLED
@@ -816,7 +817,7 @@ class NRF24:
 
     def disableCRC(self):
         disable = self.read_register(NRF24.CONFIG) & ~NRF24.EN_CRC
-        self.write_register(NRF24.CONFIG, int(disable))
+        self.write_register(NRF24.CONFIG, disable)
 
     def setRetries(self, delay, count):
         self.write_register(NRF24.SETUP_RETR, (delay & 0xf) << NRF24.ARD | (count & 0xf) << NRF24.ARC)
