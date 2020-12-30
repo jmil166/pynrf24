@@ -184,14 +184,12 @@ class NRF24:
     def _to_8b_list(data):
         """Convert an arbitray iteratable or single int to a list of ints
             where each int is smaller than 256."""
-        print("Raw data: "+str(data)+" "+str(type(data)))
         if isinstance(data, str):
             data = [ord(x) for x in data]
         elif isinstance(data, (int, long)):
             data = [int(data)]
         else:
             data = [int(x) for x in data]
-        print("Write data: "+str(data)+" "+str(type(data)))
         #for byte in data:
         #    if byte < 0 or byte > 255:
         #        raise RuntimeError("Value %d is larger than 8 bits" % byte)
