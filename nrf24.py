@@ -188,7 +188,7 @@ class NRF24:
         if isinstance(data, str):
             data = [ord(x) for x in data]
         elif isinstance(data, (int, long)):
-            data = [data]
+            data = [int(data)]
         else:
             data = [int(x) for x in data]
         print("Write data: "+str(data)+" "+str(type(data)))
