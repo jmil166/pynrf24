@@ -618,15 +618,15 @@ class NRF24:
         if pipe == 0:
             self.pipe0_reading_address = address
 
-        self.write_register(NRF24.RX_ADDR_P0 + pipe, address)
+        self.write_register(NRF24.RX_ADDR_P0 + pipe, int(address))
         if not self.dynamic_payloads_enabled:
-            self.write_register(NRF24.RX_PW_P0 + pipe, self.payload_size)
+            self.write_register(NRF24.RX_PW_P0 + pipe, int(self.payload_size))
 
         # Note it would be more efficient to set all of the bits for all open
         # pipes at once.  However, I thought it would make the calling code
         # more simple to do it this way.
         self.write_register(NRF24.EN_RXADDR,
-                            self.read_register(NRF24.EN_RXADDR) | (1 << pipe))
+                            int(self.read_register(NRF24.EN_RXADDR) | (1 << pipe)))
 
     def closeReadingPipe(self, pipe):
         self.write_register(NRF24.EN_RXADDR,
